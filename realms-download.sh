@@ -9,9 +9,12 @@ if [ -z ${access_token} ] || [ -z ${name} ] || [ -z ${id} ];then
 fi
 
 backup_number="${1:-1}"
-output_file=world.tar.gz
+server_index="${2:-1}"
+ts="$(date +'%Y%m%d_%H%M')"
+output_file="world_${ts}.tar.gz"
 realms_server=https://pc.realms.minecraft.net
 version=1.11.2
+#version=1.16.4
 
 cookie_string="Cookie:sid=token:${access_token}:${id};user=${name};version=${version}"
 
@@ -21,7 +24,8 @@ if [ $? -ne 0 ];then
   echo "Error getting worlds, response: ${response}"
   exit 1
 fi
-world_id=$(echo ${response} | jq .servers[0].id)
+echo $response > /tmp/mclog
+world_id=$(echo ${response} | jq .servers[${server_index}].id)
 
 # 2. get download link
 response=$(http --check-status --ignore-stdin --verify=no GET ${realms_server}/worlds/${world_id}/slot/${backup_number}/download "${cookie_string}")
