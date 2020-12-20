@@ -9,7 +9,7 @@ DESCRIPTION:
 
 AUTHOR:
 
-  Jud Dagnall <jdagnall@splunk.com>
+  Jud Dagnall <github@dagnall.net>
 
 EXAMPLES:
 
